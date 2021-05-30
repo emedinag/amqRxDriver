@@ -8,21 +8,22 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-char **new_argv(int count, ...)
-{
-    va_list args;
-    int i;
-    char **argv = malloc((count+1) * sizeof(char*));
-    char *temp;
-    va_start(args, count);
-    for (i = 0; i < count; i++) {
-        temp = va_arg(args, char*);
-        argv[i] = malloc(sizeof(temp));
-        argv[i] = temp;
-    }
-    argv[i] = NULL;
-    va_end(args);
-    return argv;
-}
+#include <cmqc.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+typedef struct dict_t_struct {
+    char *key;
+    void *value;
+    struct dict_t_struct *next;
+} dict_t;
+
+dict_t **dictAlloc(void);
+void dictDealloc(dict_t **dict);
+
+void *getItem(dict_t *dict, char *key);
+void delItem(dict_t **dict, char *key);
+void addItem(dict_t **dict, char *key, void *value);
 
 #endif /* UTILS_H_ */

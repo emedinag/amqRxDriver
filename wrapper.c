@@ -9,15 +9,27 @@
 #include "includes/connectionManager.h"
 #include "includes/utils.h"
 
+static ERL_NIF_TERM amqs_connect(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] ){
+
+	mq_auth_info auth;
+	auth.user="emgomez";
+	//strcpy(auth.password, "");
+	int result = createConnection("QM", auth);
+	return enif_make_int(env, result);
+}
 
 
+static ERL_NIF_TERM amqs_disconnect(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] ){
+	int result = closeConnection();
+	return enif_make_int(env, result);
+}
 
-static ERL_NIF_TERM amqsput(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] ){
+
+static ERL_NIF_TERM amqs_put(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] ){
 	int bfz=sizeof(char)*65534;
 	char* result = malloc(bfz);
 	int getstr=enif_get_string(env, argv[0], result, bfz, ERL_NIF_LATIN1);
-	char** mqparams= new_argv(3,"bean", "DEV.QUEUE.1", "QM");
-	doMQPUT(3, mqparams, result);
+	doMQPUT("DEV.QUEUE.1", result);
 	return enif_make_string(env, result, ERL_NIF_LATIN1);
 
 /*

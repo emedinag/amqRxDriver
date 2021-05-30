@@ -10,10 +10,15 @@
 
 #include <erl_nif.h>
 
-static ERL_NIF_TERM amqsput(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] );
+static ERL_NIF_TERM amqs_put(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] );
+static ERL_NIF_TERM amqs_connect(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] );
+static ERL_NIF_TERM amqs_disconnect(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[] );
+
 
 static ErlNifFunc nif_focus[]= {
-		{"amqsput", 1, amqsput},
+		{"amqs_put", 1, amqs_put},
+		{"amqs_connect", 1 , amqs_connect},
+		{"amqs_disconnect", 1, amqs_disconnect}
 };
 
 ERL_NIF_INIT(amqRxDriver,nif_focus,NULL,NULL,NULL,NULL);
